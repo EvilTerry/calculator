@@ -16,6 +16,7 @@ const numberBtns = document.querySelectorAll('.btn');
 clear.addEventListener('click', screenClear);
 allClear.addEventListener('click', screenAllClear);
 addBtn.addEventListener('click', addNumbers);
+subtractBtn.addEventListener('click', subtractNumbers);
 numberBtns.forEach(button => {
     button.addEventListener('click', () => { screenEnter(button.textContent) } );
 });
@@ -61,6 +62,8 @@ function screenClear() {
 
 function screenAllClear() {
     screen.textContent = 0;
+    displayNumber = 0;
+    calculatedNumber = 0;
 }
 
 function operate(operator, firstNumber, secondNumber) {
@@ -71,4 +74,12 @@ function addNumbers() {
     calculatedNumber += Number(displayNumber);
     displayNumber = 0;
     screen.textContent = calculatedNumber;
+    currentOperator = 'add';
+}
+
+function subtractNumbers() {
+    calculatedNumber -= Number(displayNumber);
+    displayNumber = 0;
+    screen.textContent = calculatedNumber;
+    currentOperator = 'subtract';
 }
