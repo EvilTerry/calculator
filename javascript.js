@@ -1,7 +1,6 @@
-let displayNumber = 0;
-let calculatedNumber = 0;
+let displayNumber = 'NaN';
+let calculatedNumber = 'NaN';
 let currentOperator = 'none';
-
 
 const screen = document.querySelector('.screen');
 const clear = document.querySelector('.clear');
@@ -13,19 +12,17 @@ const multiplyBtn = document.querySelector('.multiply');
 const divideBtn = document.querySelector('.divide');
 const numberBtns = document.querySelectorAll('.btn');
 
+
 clear.addEventListener('click', screenClear);
 allClear.addEventListener('click', screenAllClear);
-addBtn.addEventListener('click', addNumbers);
-subtractBtn.addEventListener('click', subtractNumbers);
+operatorBtn.addEventListener('click', () => {operate(currentOperator)});
+addBtn.addEventListener('click', () => {setOperator('add')});
+subtractBtn.addEventListener('click', () => {setOperator('subtract')});
+divideBtn.addEventListener('click', () => {setOperator('divide')});
+multiplyBtn.addEventListener('click', () => {setOperator('multiply')});
 numberBtns.forEach(button => {
     button.addEventListener('click', () => { screenEnter(button.textContent) } );
 });
-
-
-
-
-
-
 
 function add(x, y) {
     return x+y
@@ -44,17 +41,27 @@ function divide(x, y) {
 }
 
 function screenEnter(number) {
-    screen.textContent = displayNumber;
-    if(screen.textContent === '0')
+    if(displayNumber === 'NaN')
+    {
         screen.textContent = number;
+        displayNumber = screen.textContent;
+    }
     else
+    {
         screen.textContent += number;
-    displayNumber = screen.textContent;
+        displayNumber = screen.textContent;
+    }
+    console.log(displayNumber);
 }
 
 function screenClear() {
+    if(displayNumber === 'NaN')
+        return;
     if(screen.textContent.length === 1)
+    {
         screen.textContent = 0;
+        displayNumber = 'NaN';
+    }
     else
         screen.textContent = screen.textContent.substring(0, screen.textContent.length-1);
     displayNumber = screen.textContent;
@@ -62,24 +69,78 @@ function screenClear() {
 
 function screenAllClear() {
     screen.textContent = 0;
-    displayNumber = 0;
-    calculatedNumber = 0;
+    displayNumber = 'NaN';
+    calculatedNumber = 'NaN';
+    currentOperator = 'none';
 }
 
-function operate(operator, firstNumber, secondNumber) {
+function setOperator(operator) {
+    if(currentOperator === 'none')
+    {
+        currentOperator = operator;
+        operate(currentOperator);
+    }
+    else
+    {
+        operate(currentOperator);
+        currentOperator = operator;
+    }
+}
 
+function operate(operator) {
+    if(calculatedNumber === 'NaN')
+    {
+        calculatedNumber = Number(displayNumber);
+        displayNumber = 'NaN';
+    }
+    if(displayNumber === 'NaN')
+        return;
+
+    switch(operator) {
+        case 'add':
+            addNumbers();
+            break;
+        case 'subtract':
+            subtractNumbers();
+            break;
+        case 'divide':
+            divideNumbers();
+            break;
+        case 'multiply':
+            multiplyNumbers();
+            break;
+    };
 }
 
 function addNumbers() {
     calculatedNumber += Number(displayNumber);
-    displayNumber = 0;
+    displayNumber = 'NaN';
     screen.textContent = calculatedNumber;
     currentOperator = 'add';
 }
 
 function subtractNumbers() {
     calculatedNumber -= Number(displayNumber);
-    displayNumber = 0;
+    displayNumber = 'NaN';
     screen.textContent = calculatedNumber;
     currentOperator = 'subtract';
+}
+
+function divideNumbers() {
+    if(displayNumber = '0')
+    {
+        screen.textContent = "Can't divide by 0...";
+        return
+    }
+    calculatedNumber /= Number(displayNumber);
+    displayNumber = 'NaN';
+    screen.textContent = calculatedNumber;
+    currentOperator = 'divide';
+}
+
+function multiplyNumbers() {
+    calculatedNumber *= Number(displayNumber);
+    displayNumber = 'NaN';
+    screen.textContent = calculatedNumber;
+    currentOperator = 'multiply';
 }
