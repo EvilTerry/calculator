@@ -51,7 +51,6 @@ function screenEnter(number) {
         screen.textContent += number;
         displayNumber = screen.textContent;
     }
-    console.log(displayNumber);
 }
 
 function screenClear() {
@@ -63,8 +62,11 @@ function screenClear() {
         displayNumber = 'NaN';
     }
     else
+    {
         screen.textContent = screen.textContent.substring(0, screen.textContent.length-1);
-    displayNumber = screen.textContent;
+        displayNumber = screen.textContent;        
+    }
+
 }
 
 function screenAllClear() {
